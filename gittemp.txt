@@ -4,8 +4,6 @@ git add -A
 git commit -m "aaa"
 git pull origin master
 
-
-
 作業がおわったら
 git add -A
 git commit -m "aaa"
