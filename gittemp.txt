@@ -1,0 +1,17 @@
+
+作業を始める前
+git add -A
+git commit -m "aaa"
+git pull origin master
+
+作業がおわったら
+git add -A
+git commit -m "aaa"
+git pull origin master
+git push origin master
+
+branch新規作成して移動
+git checkout -b branchname
+
+branchの移動
+git checkout branchname
