@@ -1,0 +1,8 @@
+
+作業を始める前
+git pull origin master
+
+さぎょうがおわったら
+git add -A
+git commit -m "aaa"
+git push origin master
