@@ -22,6 +22,25 @@ main(void)
   }
   dup(0);  // stdout
   dup(0);  // stderr
+  
+  char static_password[100] = "abcde";
+  
+  // username
+  char username[100];
+  write(1, "username: ", strlen("username: "));
+  gets(username, 100);
+  
+  //password
+  char password[100];
+  write(1, "password: ", strlen("password: "));
+  gets(password, 100);
+  
+  //authentication
+  if (!strcmp(password, static_password)) {
+    exit(0);
+  }
+  
+  printf("you are logged in as %s\n", username);
 
   for(;;){
     printf("init: starting sh\n");
