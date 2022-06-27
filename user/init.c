@@ -27,12 +27,12 @@ main(void)
   
   // username
   char username[100];
-  write(1, "username: ", strlen("username: "));
+  printf("username: ");
   gets(username, 100);
   
   //password
   char password[100];
-  write(1, "password: ", strlen("password: "));
+  printf("password: ");
   gets(password, 100);
   
   //authentication
