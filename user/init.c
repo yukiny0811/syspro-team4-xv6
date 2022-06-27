@@ -8,6 +8,7 @@
 #include "kernel/file.h"
 #include "user/user.h"
 #include "kernel/fcntl.h"
+#include "kernel/md5.h"
 
 char *argv[] = { "sh", 0 };
 
@@ -44,7 +45,11 @@ main(void)
   fd = open("passwords-default", O_RDONLY);
   if (fd <= 0) {
     fd = open("passwords-default", O_CREATE | O_WRONLY);
-    write(fd, "default", 7);
+    char default_hashed[100];
+    char raw_pass[100];
+    strcpy(raw_pass, "default");
+    getmd5(raw_pass, 64, default_hashed);
+    write(fd, default_hashed, 100);
     close(fd);
   }
   
@@ -61,7 +66,10 @@ main(void)
       password[strlen(password)-1] = 0;
     }
     
-    if (strcmp(password, static_password) != 0) {
+    char hashed[100];
+    getmd5(password, 64, hashed);
+    
+    if (strcmp(hashed, static_password) != 0) {
       printf("wrong password\n");
       exit(0);
     }

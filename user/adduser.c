@@ -6,6 +6,7 @@
 #include "kernel/file.h"
 #include "user/user.h"
 #include "kernel/fcntl.h"
+#include "kernel/md5.h"
 
 int main(int argc, char *argv[])
 {
@@ -39,7 +40,11 @@ int main(int argc, char *argv[])
       }
       
       if (strcmp(new_password, new_password_confirm) == 0) {
-        write(fd, new_password, strlen(new_password));
+        
+        char hashed[100];
+        getmd5(new_password, 64, hashed);
+        
+        write(fd, hashed, strlen(hashed));
         printf("successfully created user %s", argv[i]);
         close(0);
         exit(0);
