@@ -23,7 +23,7 @@ main(void)
   dup(0);  // stdout
   dup(0);  // stderr
   
-  char static_password[100] = "abcde";
+  char static_password[7] = "abcde\n";
   
   // username
   char username[100];
@@ -36,7 +36,8 @@ main(void)
   gets(password, 100);
   
   //authentication
-  if (!strcmp(password, static_password)) {
+  if (strcmp(password, static_password) != 0) {
+    printf("wrong password\n");
     exit(0);
   }
   
