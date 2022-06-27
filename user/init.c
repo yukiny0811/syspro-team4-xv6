@@ -48,9 +48,12 @@ main(void)
     char default_hashed[100];
     char raw_pass[100];
     strcpy(raw_pass, "default");
+    raw_pass[7] = 0;
     getmd5(raw_pass, 64, default_hashed);
     write(fd, default_hashed, 100);
+    printf("created default user... Please reboot");
     close(fd);
+    exit(0);
   }
   
   fd = open(processed_username, O_RDONLY);
