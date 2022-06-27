@@ -23,23 +23,53 @@ main(void)
   dup(0);  // stdout
   dup(0);  // stderr
   
-  char static_password[7] = "abcde\n";
-  
   // username
   char username[100];
   printf("username: ");
   gets(username, 100);
   
-  //password
-  char password[100];
-  printf("password: ");
-  gets(password, 100);
+  if (strlen(username) > 0 && username[strlen(username)-1] =='\n') {
+    username[strlen(username)-1] = 0;
+  }
   
-  //authentication
-  if (strcmp(password, static_password) != 0) {
-    printf("wrong password\n");
+  char processed_username[110];
+  strcpy(processed_username, "passwords-");
+  
+  int i;
+  for (i = 0; i < strlen(username); i++) {
+    processed_username[10+i] = username[i];
+  }
+  
+  int fd;
+  fd = open("passwords-default", O_RDONLY);
+  if (fd <= 0) {
+    fd = open("passwords-default", O_CREATE | O_WRONLY);
+    write(fd, "default", 7);
+    close(fd);
+  }
+  
+  fd = open(processed_username, O_RDONLY);
+  if (fd > 0) {
+    char static_password[100];
+    read(fd, static_password, 100);
+    
+    char password[100];
+    printf("password: ");
+    gets(password, 100);
+    
+    if (strlen(password) > 0 && password[strlen(password)-1] =='\n') {
+      password[strlen(password)-1] = 0;
+    }
+    
+    if (strcmp(password, static_password) != 0) {
+      printf("wrong password\n");
+      exit(0);
+    }
+  } else {
+    printf("user %s doesn't exist\n", username);
     exit(0);
   }
+  close(fd);
   
   printf("you are logged in as %s\n", username);
 
