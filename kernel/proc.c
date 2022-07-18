@@ -696,6 +696,6 @@ cps(void)
 
 
 
-int get_uid(void){
+char* get_uid(void){
   return myproc() -> uid;
 }

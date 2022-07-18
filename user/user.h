@@ -24,8 +24,8 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int cps(void);
-void set_uid(int id);
-int get_uid(void);
+void set_uid(char* id);
+char* get_uid(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

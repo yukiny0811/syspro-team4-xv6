@@ -92,7 +92,7 @@ main(void)
       exit(1);
     }
     if(pid == 0){ 
-      set_uid(33);
+      set_uid(username);
       exec("sh", argv);
       printf("init: exec sh failed\n");
       exit(1);

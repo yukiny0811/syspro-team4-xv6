@@ -51,16 +51,6 @@ int main(int argc, char *argv[])
         getmd5(new_password, 64, hashed);
         
         write(fd, hashed, strlen(hashed));
-        
-        char uid_name[110];
-        strcpy(uid_name, "uid-");
-        for (i = 0; i < strlen(argv[1]); i++) {
-          uid_name[4+i] = argv[1][i];
-        }
-        fd = open(uid_name, O_CREATE | O_WRONLY);
-        write(fd, uid_name, strlen(uid_name));
-        close(fd);
-        
         printf("successfully created user %s", argv[i]);
         close(0);
         exit(0);

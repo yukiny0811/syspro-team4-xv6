@@ -2,6 +2,8 @@
 // Support functions for system calls that involve file descriptors.
 //
 
+
+
 #include "types.h"
 #include "riscv.h"
 #include "defs.h"
@@ -12,6 +14,15 @@
 #include "file.h"
 #include "stat.h"
 #include "proc.h"
+
+int
+strcmp(const char *p, const char *q)
+{
+  while(*p && *p == *q)
+    p++, q++;
+  return (uchar)*p - (uchar)*q;
+}
+
 
 struct devsw devsw[NDEV];
 struct {
@@ -107,7 +118,7 @@ int
 fileread(struct file *f, uint64 addr, int n)
 {
   int r = 0;
-
+  
   if(f->readable == 0)
     return -1;
 
@@ -119,7 +130,7 @@ fileread(struct file *f, uint64 addr, int n)
     r = devsw[f->major].read(1, addr, n);
   } else if(f->type == FD_INODE){
     ilock(f->ip);
-    if (get_uid() != f->ip->uid) {
+    if (f->ip->isopen != 0 && strcmp(get_uid(), f->ip->uid) == 0) {
       printf("denied file.c read");
       iunlock(f->ip);
       exit(0);
@@ -167,12 +178,11 @@ filewrite(struct file *f, uint64 addr, int n)
       begin_op();
       ilock(f->ip);
       
-      if (get_uid() != f->ip->uid) {
-        printf("denied file.c write");
+      if (f->ip->isopen != 0 && strcmp(get_uid(), f->ip->uid) == 0) {
+        printf("denied file.c read");
         iunlock(f->ip);
         exit(0);
       }
-      
       if ((r = writei(f->ip, 1, addr + i, f->off, n1)) > 0)
         f->off += r;
       iunlock(f->ip);

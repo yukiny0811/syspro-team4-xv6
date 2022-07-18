@@ -102,12 +102,13 @@ sys_cps(void)
 }
 
 uint64 sys_set_uid(void) {
-  int temp;
-  argint(0, (int*) &temp);
+  char* temp;
+  argstr(0, (char *)&temp, 100);
   myproc() -> uid = temp;
   return 0;
 }
 
 uint64 sys_get_uid(void) {
-  return get_uid();
+  get_uid();
+  return 0;
 }

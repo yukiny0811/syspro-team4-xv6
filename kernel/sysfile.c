@@ -266,9 +266,7 @@ create(char *path, short type, short major, short minor)
   ip->minor = minor;
   ip->nlink = 1;
   ip->uid = get_uid();
-  ip->isopen = 0;
-  
-  printf("aaaaa");
+  ip->isopen = 1;
   
   iupdate(ip);
 
