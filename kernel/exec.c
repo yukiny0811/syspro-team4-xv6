@@ -2,10 +2,14 @@
 #include "param.h"
 #include "memlayout.h"
 #include "riscv.h"
+#include "fs.h"
 #include "spinlock.h"
+#include "sleeplock.h"
+#include "file.h"
 #include "proc.h"
 #include "defs.h"
 #include "elf.h"
+
 
 static int loadseg(pde_t *pgdir, uint64 addr, struct inode *ip, uint offset, uint sz);
 
@@ -28,6 +32,14 @@ exec(char *path, char **argv)
     return -1;
   }
   ilock(ip);
+  
+  // if (ip->isopen == 0 && get_uid() != ip->uid) {
+  //   iunlockput(ip);
+  //   end_op();
+  //   printf("denied exec\n");
+  //   printf("ip->uid: %d, get_uid: %d, isopen: %d", ip->uid, get_uid(), ip->isopen);
+  //   exit(0);
+  // }
 
   // Check ELF header
   if(readi(ip, 0, (uint64)&elf, 0, sizeof(elf)) != sizeof(elf))

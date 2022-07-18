@@ -91,7 +91,8 @@ main(void)
       printf("init: fork failed\n");
       exit(1);
     }
-    if(pid == 0){
+    if(pid == 0){ 
+      set_uid(33);
       exec("sh", argv);
       printf("init: exec sh failed\n");
       exit(1);

@@ -100,3 +100,14 @@ sys_cps(void)
 {
   return cps();
 }
+
+uint64 sys_set_uid(void) {
+  int temp;
+  argint(0, (int*) &temp);
+  myproc() -> uid = temp;
+  return 0;
+}
+
+uint64 sys_get_uid(void) {
+  return get_uid();
+}

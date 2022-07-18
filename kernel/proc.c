@@ -684,7 +684,7 @@ cps(void)
       // initlock(&p->lock, "proc");
       acquire(&p->lock);
       if (p->state == SLEEPING){
-        printf("%s \t %d \t SLEEPING \n", p->name, p->pid);
+        printf("%s \t %d \t SLEEPING \t uid:%d\n", p->name, p->pid, p->uid);
       }
       release(&p->lock);
   }
@@ -692,4 +692,10 @@ cps(void)
 
   return 22;
 
+}
+
+
+
+int get_uid(void){
+  return myproc() -> uid;
 }

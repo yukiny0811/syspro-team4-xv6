@@ -119,6 +119,11 @@ fileread(struct file *f, uint64 addr, int n)
     r = devsw[f->major].read(1, addr, n);
   } else if(f->type == FD_INODE){
     ilock(f->ip);
+    if (get_uid() != f->ip->uid) {
+      printf("denied file.c read");
+      iunlock(f->ip);
+      exit(0);
+    }
     if((r = readi(f->ip, 1, addr, f->off, n)) > 0)
       f->off += r;
     iunlock(f->ip);
@@ -161,6 +166,13 @@ filewrite(struct file *f, uint64 addr, int n)
 
       begin_op();
       ilock(f->ip);
+      
+      if (get_uid() != f->ip->uid) {
+        printf("denied file.c write");
+        iunlock(f->ip);
+        exit(0);
+      }
+      
       if ((r = writei(f->ip, 1, addr + i, f->off, n1)) > 0)
         f->off += r;
       iunlock(f->ip);

@@ -105,6 +105,8 @@ extern uint64 sys_wait(void);
 extern uint64 sys_write(void);
 extern uint64 sys_uptime(void);
 extern uint64 sys_cps(void);
+extern uint64 sys_set_uid(void);
+extern uint64 sys_get_uid(void);
 
 static uint64 (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -129,6 +131,8 @@ static uint64 (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_cps]   sys_cps,
+[SYS_set_uid] sys_set_uid,
+[SYS_get_uid] sys_get_uid
 };
 
 void
