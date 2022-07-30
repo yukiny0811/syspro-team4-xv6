@@ -5,6 +5,16 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#include "fcntl.h"
+
+#include "stat.h"
+// #include "kernel/spinlock.h"
+#include "kernel/sleeplock.h"
+#include "fs.h"
+#include "file.h"
+// #include "user/user.h"
+// #include "kernel/fcntl.h"
+// #include "kernel/md5.h"
 
 struct cpu cpus[NCPU];
 
@@ -694,8 +704,22 @@ cps(void)
 
 }
 
+void set_uid(int id) {
+  // int fd;
+  // fd = open("uid-counter", O_RDONLY);
+  // char count[1];
+  // read(fd, count, 1);
+  // int cou = (int)count[0];
+  // cou += 1;
+  // close(fd);
+  // myproc() -> uid = ccc;
+  printf("id: %d", id);
+  myproc() -> uid = id;
+  printf("id: %d", id);
+}
 
 
-char* get_uid(void){
+int get_uid(void){
+  printf("pid: %d", myproc()->uid);
   return myproc() -> uid;
 }

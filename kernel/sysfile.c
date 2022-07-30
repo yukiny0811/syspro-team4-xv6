@@ -302,6 +302,9 @@ sys_open(void)
 
   if(omode & O_CREATE){
     ip = create(path, T_FILE, 0, 0);
+    ip->uid = get_uid();
+    printf("uid: %d", get_uid());
+    ip->isopen = 1;
     if(ip == 0){
       end_op();
       return -1;
@@ -343,6 +346,8 @@ sys_open(void)
   f->ip = ip;
   f->readable = !(omode & O_WRONLY);
   f->writable = (omode & O_WRONLY) || (omode & O_RDWR);
+  f->ip->uid = get_uid();
+  f->ip->isopen = 1;
 
   if((omode & O_TRUNC) && ip->type == T_FILE){
     itrunc(ip);

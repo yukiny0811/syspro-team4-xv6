@@ -102,9 +102,11 @@ sys_cps(void)
 }
 
 uint64 sys_set_uid(void) {
-  char* temp;
-  argstr(0, (char *)&temp, 100);
-  myproc() -> uid = temp;
+  int temp;
+  argint(0, (int *)&temp);
+  printf("TEMP: %d", temp);
+  // myproc() -> uid = temp;
+  set_uid(temp);
   return 0;
 }
 

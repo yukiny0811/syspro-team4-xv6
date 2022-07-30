@@ -28,7 +28,7 @@ struct inode {
   uint size;
   uint addrs[NDIRECT+1];
   
-  char* uid;
+  int uid;
   int isopen; // 0 is locked, 1 is open to everyone
 };
 

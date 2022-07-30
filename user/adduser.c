@@ -1,5 +1,6 @@
 #include "kernel/types.h"
 #include "kernel/stat.h"
+#include "kernel/defs.h"
 #include "kernel/spinlock.h"
 #include "kernel/sleeplock.h"
 #include "kernel/fs.h"
@@ -7,6 +8,8 @@
 #include "user/user.h"
 #include "kernel/fcntl.h"
 #include "kernel/md5.h"
+
+
 
 int main(int argc, char *argv[])
 {
@@ -51,6 +54,28 @@ int main(int argc, char *argv[])
         getmd5(new_password, 64, hashed);
         
         write(fd, hashed, strlen(hashed));
+        
+        fd = open("uid-counter", O_RDONLY);
+        char count[1];
+        read(fd, count, 1);
+        int cou = (int)count[0];
+        cou += 1;
+        char ccc[1];
+        ccc[0] = (char)cou;
+        close(fd);
+        fd = open("uid-counter", O_WRONLY);
+        write(fd, ccc, 1);
+        close(fd);
+        
+        char int_username[110];
+        strcpy(int_username, "uid-");
+        for (i = 0; i < strlen(argv[1]); i++) {
+          int_username[4+i] = argv[1][i];
+        }
+        fd = open(int_username, O_CREATE | O_WRONLY);
+        write(fd, ccc, 1);
+        close(fd);
+        
         printf("successfully created user %s", argv[i]);
         close(0);
         exit(0);

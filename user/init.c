@@ -53,6 +53,13 @@ main(void)
     write(fd, default_hashed, 100);
     printf("created default user... Please reboot");
     close(fd);
+    
+    fd = open("uid-counter", O_CREATE | O_WRONLY);
+    // char count[1];
+    // read(fd, count, 1);
+    // int *cou = (int *)count;
+    write(fd, "0", 1);
+    close(fd);
     exit(0);
   }
   
@@ -82,6 +89,13 @@ main(void)
   }
   close(fd);
   
+  
+  // write(fd, )
+  
+  for (i = 0; i < strlen(username); i++) {
+    processed_username[10+i] = username[i];
+  }
+  
   printf("you are logged in as %s\n", username);
 
   for(;;){
@@ -92,7 +106,29 @@ main(void)
       exit(1);
     }
     if(pid == 0){ 
-      set_uid(username);
+      
+      printf("kkk?");
+      
+      char int_username[110];
+      strcpy(int_username, "uid-");
+      for (i = 0; i < strlen(username); i++) {
+        int_username[4+i] = username[i];
+      }
+      fd = open(int_username, O_RDONLY);
+      
+      char count[1];
+      read(fd, count, 1);
+      int cou = (int)count[0];
+      close(fd);
+      
+      set_uid(cou);
+      
+      int test = get_uid();
+      
+      printf("cou: %d", test);
+      
+      argv[1] = (char)cou;
+      
       exec("sh", argv);
       printf("init: exec sh failed\n");
       exit(1);
